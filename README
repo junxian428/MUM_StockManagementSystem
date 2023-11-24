@@ -1,0 +1,174 @@
+Register Backend API
+
+mvn spring-boot:run
+
+
+
+Register
+
+POST method: http://localhost:8086/api/v1/auth/register
+
+
+role only can 
+
+{
+    "firstname": "admin1",
+    "lastname": "admin1",
+    "email": "admin1@gmail.com",
+    "password": "admin1",
+    "role": "ADMIN"
+}
+
+
+{
+    "firstname": "manager1",
+    "lastname": "manager1",
+    "email": "manager1@gmail.com",
+    "password": "manager1",
+    "role": "MANAGAER"
+}
+
+ROLE: ADMIN
+
+
+Login
+
+http://localhost:8086/api/v1/auth/authenticate
+
+{
+    "email": "admin1@gmail.com",
+    "password": "admin1"
+}
+
+Response:
+
+{
+    "access_token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbjFAZ21haWwuY29tIiwiaWF0IjoxNzAwODM4NDY5LCJleHAiOjE3MDA5MjQ4Njl9.Q05QmWeMIjXTrkWWR4J7-IXoD6sUxQwTTLYycWX_nfY",
+    "refresh_token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbjFAZ21haWwuY29tIiwiaWF0IjoxNzAwODM4NDY5LCJleHAiOjE3MDE0NDMyNjl9.qmdpSAvB9rt1IyZ6wYKNp1dXggETg6n0xNec8Ey1AwE"
+}
+
+
+Logout:
+
+http://localhost:8086/api/v1/auth/logout
+
+Bearer Token:
+
+eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbjFAZ21haWwuY29tIiwiaWF0IjoxNzAwODM4NDY5LCJleHAiOjE3MDA5MjQ4Njl9.Q05QmWeMIjXTrkWWR4J7-IXoD6sUxQwTTLYycWX_nfY
+
+
+
+
+http://localhost:8086/api/v1/admin
+
+GET:: admin controller
+
+http://localhost:8086/api/v1/management
+
+GET:: management controller
+
+http://localhost:8086/api/v1/management
+
+POST:: management controller
+
+http://localhost:8086/api/v1/admin
+
+POST:: admin controller
+
+http://localhost:8086/api/v1/admin
+
+PUT:: admin controller
+
+http://localhost:8086/api/v1/management
+
+PUT:: management controller
+
+http://localhost:8086/api/v1/admin
+
+DELETE:: admin controller
+
+http://localhost:8086/api/v1/management
+
+DELETE:: management controller
+____________________________________________________________________________
+
+ROLE: MANAGER
+
+http://localhost:8086/api/v1/management
+
+RESPONSE: 200
+
+GET:: management controller
+
+
+
+Response: 200
+
+POST:: management controller
+
+Response: 200
+
+PUT:: management controller
+
+Response: 200
+
+DELETE:: management controller
+
+BUT
+
+http://localhost:8086/api/v1/admin
+403 forbidden
+
+_________________________________________________________________________________________________________________________
+
+Frontend:
+
+
+         // Check if access_token is null
+         if (sessionStorage.getItem('access_token') === null) {
+            // Redirect to the login page
+            window.location.href = '/#/login';
+          }
+
+           // Set up headers with the access_token
+        const headers = {
+            Authorization: `Bearer ${accessToken}`,
+          };
+  
+          // Make a GET request to your Java Spring backend
+          const response = await axios.get('your_backend_api_endpoint', { headers });
+  
+          // Handle the response data as needed
+          console.log('Response Data:', response.data);
+        } catch (error) {
+          // Handle errors
+          console.error('Error fetching data:', error.message);
+        }
+
+How to know Role through JWT Token?
+
+   @Select("SELECT _user.role " +
+    "FROM token " +
+    "INNER JOIN _user ON token.user_id = _user.id " +
+    "WHERE token.token = #{tokenValue}")
+    String getRoleByTokenValue(@Param("tokenValue") String tokenValue);
+
+    
+
+Admin
+
+
+Manager
+
+
+
+_______________________________________________________________________________________________________________________
+
+Session Layer
+
+
+
+
+__________________________________________________________________________________________________________________________
+
+Database
